@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shoutstr</title>
+    <link rel="stylesheet" href="editor.css" />
+  </head>
+  <body>
+    <div class="app">
+      <header class="topbar">
+        <div class="topbar-left">
+          <span class="logo">✦</span>
+          <h1>Shoutstr</h1>
+          <span id="save-indicator" class="save-indicator">Loading…</span>
+        </div>
+        <div class="topbar-right">
+          <button id="preview-toggle" type="button" class="btn btn-secondary">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+              <circle cx="12" cy="12" r="3"/>
+            </svg>
+            Preview
+          </button>
+          <button id="publish-btn" type="button" class="btn btn-primary">Publish</button>
+          <button id="settings-toggle" type="button" class="btn btn-icon-only" aria-label="Settings" title="Settings">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+              <circle cx="12" cy="12" r="3"/>
+              <path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 0 1 0 2.83 2 2 0 0 1-2.83 0l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-2 2 2 2 0 0 1-2-2v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 0 1-2.83 0 2 2 0 0 1 0-2.83l.06-.06A1.65 1.65 0 0 0 4.68 15a1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1-2-2 2 2 0 0 1 2-2h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 0 1 0-2.83 2 2 0 0 1 2.83 0l.06.06A1.65 1.65 0 0 0 9 4.68a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 2-2 2 2 0 0 1 2 2v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 0 1 2.83 0 2 2 0 0 1 0 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 2 2 2 2 0 0 1-2 2h-.09a1.65 1.65 0 0 0-1.51 1z"/>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <section class="meta-bar">
+        <div class="meta-fields">
+          <div class="field">
+            <label for="title">Title</label>
+            <input id="title" type="text" placeholder="Article title" autocomplete="off" />
+          </div>
+          <div class="field">
+            <label for="subtitle">Subtitle</label>
+            <input id="subtitle" type="text" placeholder="Optional subtitle" autocomplete="off" />
+          </div>
+          <div class="field field-tags">
+            <label for="tags">Tags</label>
+            <input id="tags" type="text" placeholder="comma, separated, tags" autocomplete="off" />
+          </div>
+          <div class="field field-header-image hidden" id="header-image-field">
+            <label>Header image</label>
+            <div class="header-image-control">
+              <button type="button" id="header-image-choose" class="btn btn-ghost btn-sm">Choose</button>
+              <div id="header-image-selected" class="header-image-selected hidden">
+                <button type="button" id="header-image-open" class="header-image-preview" title="Change header image">
+                  <img id="header-image-thumb" alt="" />
+                </button>
+                <button type="button" id="header-image-clear" class="btn btn-ghost btn-sm">Clear</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="platforms">
+          <span class="platforms-label">Publish to</span>
+          <label class="checkbox">
+            <input type="checkbox" id="platform-medium" value="medium" />
+            Medium
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" id="platform-substack" value="substack" />
+            Substack
+          </label>
+          <label class="checkbox">
+            <input type="checkbox" id="platform-nostr" value="nostr" />
+            Nostr
+          </label>
+        </div>
+      </section>
+
+      <main id="editor-main" class="editor-main">
+        <div class="editor-pane">
+          <details id="front-matter-panel" class="front-matter-panel">
+            <summary class="front-matter-summary">Front matter</summary>
+            <textarea
+              id="front-matter-content"
+              class="front-matter-content"
+              rows="4"
+              spellcheck="false"
+              aria-label="Front matter"
+            ></textarea>
+          </details>
+          <textarea
+            id="editor"
+            placeholder="Write markdown here"
+            spellcheck="false"
+          ></textarea>
+        </div>
+        <div id="preview-panel" class="preview-panel hidden" aria-live="polite"></div>
+      </main>
+
+      <aside id="status-drawer" class="drawer hidden">
+        <div class="drawer-header">
+          <h2 id="status-drawer-title">Publish results</h2>
+          <button id="status-close" type="button" class="btn-icon" aria-label="Close">×</button>
+        </div>
+        <div id="status-list" class="status-list"></div>
+      </aside>
+    </div>
+
+    <dialog id="settings-dialog" class="modal">
+      <form method="dialog" class="modal-content">
+        <div class="modal-header">
+          <h2>Settings</h2>
+          <button type="button" id="settings-close" class="btn-icon" aria-label="Close">×</button>
+        </div>
+
+        <div class="settings-tabs" role="tablist" aria-label="Settings sections">
+          <button type="button" id="settings-tab-config" class="settings-tab active" role="tab" aria-selected="true" aria-controls="settings-panel-config" data-tab="config">Config</button>
+          <button type="button" id="settings-tab-saved" class="settings-tab" role="tab" aria-selected="false" aria-controls="settings-panel-saved" data-tab="saved">Saved</button>
+          <button type="button" id="settings-tab-import" class="settings-tab" role="tab" aria-selected="false" aria-controls="settings-panel-import" data-tab="import">Import</button>
+        </div>
+
+        <div class="modal-body">
+          <div id="settings-panel-config" class="settings-panel active" role="tabpanel" aria-labelledby="settings-tab-config">
+            <p class="hint">Medium and Substack use your browser login — open each site and sign in before publishing.</p>
+
+            <div class="field">
+              <label for="substack-url">Substack publication URL <span class="optional">(optional)</span></label>
+              <input
+                id="substack-url"
+                type="url"
+                placeholder="Auto-detected when logged in"
+                autocomplete="off"
+              />
+              <p class="hint">Only needed if you publish to multiple Substack publications.</p>
+            </div>
+
+            <div class="field">
+              <label for="nostr-nsec">Nostr private key (nsec)</label>
+              <input id="nostr-nsec" type="password" placeholder="nsec1..." autocomplete="off" />
+              <p class="hint">Stored in chrome.storage.local. Never sent anywhere except to relays when signing.</p>
+            </div>
+
+            <div class="field">
+              <label for="nostr-relays">Nostr relays</label>
+              <textarea
+                id="nostr-relays"
+                rows="4"
+                placeholder="wss://relay.damus.io&#10;wss://nos.lol"
+                spellcheck="false"
+              ></textarea>
+            </div>
+          </div>
+
+          <div id="settings-panel-saved" class="settings-panel" role="tabpanel" aria-labelledby="settings-tab-saved" hidden>
+            <p class="hint">Automatic snapshots saved while you write (last 10 kept).</p>
+            <div id="backups-list" class="backups-list"></div>
+          </div>
+
+          <div id="settings-panel-import" class="settings-panel" role="tabpanel" aria-labelledby="settings-tab-import" hidden>
+            <p class="hint">Import a markdown file with YAML front matter (title, subtitle, tags).</p>
+            <div id="import-dropzone" class="import-dropzone">
+              <p class="import-dropzone-label">Drop file here</p>
+              <p class="import-dropzone-hint">.md or .markdown</p>
+              <label class="btn btn-ghost import-label">
+                Choose file
+                <input id="import-backup" type="file" accept=".md,.markdown,text/markdown,text/plain" hidden />
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <div class="modal-footer">
+          <button type="button" id="settings-cancel" class="btn btn-ghost">Cancel</button>
+          <button type="button" id="settings-save" class="btn btn-primary">Save settings</button>
+        </div>
+      </form>
+    </dialog>
+
+    <dialog id="header-image-dialog" class="modal modal-gallery">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h2>Choose header image</h2>
+          <button type="button" id="header-image-close" class="btn-icon" aria-label="Close">×</button>
+        </div>
+        <div class="modal-body">
+          <p class="hint">Select any image from your article or front matter.</p>
+          <div id="header-image-gallery" class="image-gallery"></div>
+          <p id="header-image-empty" class="gallery-empty hidden">No images found. Add an image link to your markdown or front matter.</p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" id="header-image-cancel" class="btn btn-ghost">Cancel</button>
+        </div>
+      </div>
+    </dialog>
+
+    <script src="../vendor/marked.min.js"></script>
+    <script src="../vendor/markdown-it.min.js"></script>
+    <script type="module" src="editor.js"></script>
+  </body>
+</html>

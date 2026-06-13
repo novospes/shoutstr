@@ -1,0 +1,20 @@
+{
+  "name": "shoutstr",
+  "version": "1.0.0",
+  "main": "index.js",
+  "directories": {
+    "lib": "lib"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "MIT",
+  "description": "Shout markdown articles into Medium, Substack, and Nostr",
+  "dependencies": {
+    "@noble/secp256k1": "^1.7.1",
+    "markdown-it": "^14.2.0",
+    "marked": "18.0.5"
+  }
+}
