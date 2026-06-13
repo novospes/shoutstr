@@ -2,7 +2,7 @@
 
 Write once in Markdown, publish everywhere. **Shoutstr** is a Chrome extension with a built-in editor that sends articles to **Medium**, **Substack**, and **Nostr** — using your browser login for Medium and Substack, no API keys required.
 
-See ![Demo](./docs/example.mp4)
+See [Demo](./docs/example.mp4)
 
 ## Features
 
